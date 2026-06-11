@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coast Cosmetics — Hair Styling Powder</title>
+  <meta name="description" content="Coast Cosmetics makes one product: a hair styling powder. Matte texture, weightless hold. Join the waitlist.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Michroma&display=swap" rel="stylesheet">
+  <style>
+    /* ───────────────────────── Tokens ───────────────────────── */
+    :root {
+      --primary:        #2c2c2e;
+      --primary-focus:  #6e6e73;
+      --primary-on-dark:#d2d2d7;
+      --btn-silver-top:    #58585c;
+      --btn-silver-bottom: #29292b;
+      --btn-silver-top-hover:    #6a6a6f;
+      --btn-silver-bottom-hover: #333336;
+      --canvas:         #ffffff;
+      --parchment:      #f5f5f7;
+      --tile-dark-1:    #272729;
+      --tile-dark-2:    #2a2a2c;
+      --black:          #000000;
+      --ink:            #1d1d1f;
+      --ink-muted-80:   #333333;
+      --ink-muted-48:   #7a7a7a;
+      --on-dark:        #ffffff;
+      --muted-on-dark:  #cccccc;
+      --hairline:       #e0e0e0;
+      --product-shadow: drop-shadow(3px 5px 30px rgba(0,0,0,0.22));
+      --font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --pad-x: clamp(22px, 5vw, 64px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.44;
+      letter-spacing: -0.374px;
+      color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: rgba(60,60,67,0.18); }
+
+    /* ───────────────────────── Global nav ───────────────────────── */
+    .global-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 48px;
+      background: linear-gradient(90deg, rgba(214,214,219,0.86) 0%, rgba(236,236,239,0.82) 55%, rgba(255,255,255,0.78) 100%);
+      -webkit-backdrop-filter: saturate(160%) blur(16px);
+      backdrop-filter: saturate(160%) blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--pad-x);
+    }
+    /* Soft gradient strip so the bar phases out into the page instead of ending in a hard line */
+    .global-nav::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; top: 100%;
+      height: 18px;
+      background: linear-gradient(180deg, rgba(214,214,219,0.30), rgba(214,214,219,0));
+      pointer-events: none;
+    }
+    .nav-wordmark {
+      font-family: 'Michroma', var(--font);
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 400;
+    }
+    .nav-links {
+      display: flex;
+      align-items: stretch;
+      gap: 24px;
+      list-style: none;
+      height: 100%;
+    }
+    .nav-links li { display: flex; }
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      font-size: 12px;
+      letter-spacing: -0.12px;
+      color: var(--ink-muted-80);
+      text-decoration: none;
+      transition: color 0.2s ease-out;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .nav-links a:focus-visible { outline: 2px solid var(--primary-focus); outline-offset: -2px; }
+    /* Mobile: hide the wordmark (it repeats as the hero eyebrow) and show all four
+       links full-width so the primary Waitlist link stays reachable. */
+    @media (max-width: 640px) {
+      .global-nav { justify-content: center; }
+      .nav-wordmark { display: none; }
+      .nav-links { gap: clamp(14px, 5vw, 26px); }
+      .nav-links a { font-size: 13px; }
+    }
+
+    /* ───────────────────────── Tiles ───────────────────────── */
+    .tile {
+      padding: 96px var(--pad-x);
+      text-align: center;
+    }
+    .tile-white     { background: var(--canvas); }
+    .tile-parchment { background: var(--parchment); }
+    .tile-dark      { background: var(--tile-dark-1); color: var(--on-dark); }
+    .tile-dark-2    { background: var(--tile-dark-2); color: var(--on-dark); }
+    .tile-inner { max-width: 980px; margin: 0 auto; }
+
+    @media (max-width: 735px) {
+      .tile { padding: 56px var(--pad-x); }
+    }
+
+    /* ───────────────────────── Typography ───────────────────────── */
+    .hero-display {
+      font-size: clamp(34px, 6vw, 56px);
+      font-weight: 600;
+      line-height: 1.07;
+      letter-spacing: -0.02em;
+    }
+    .display-lg {
+      font-size: clamp(28px, 4.4vw, 40px);
+      font-weight: 600;
+      line-height: 1.1;
+    }
+    .lead {
+      font-size: clamp(19px, 3vw, 28px);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 0.007em;
+    }
+    .lead-airy {
+      font-size: clamp(18px, 2.6vw, 24px);
+      font-weight: 300;
+      line-height: 1.5;
+      letter-spacing: 0;
+    }
+    .eyebrow {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.29;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-muted-48);
+    }
+    .tile-dark .eyebrow, .tile-dark-2 .eyebrow { color: var(--muted-on-dark); }
+    .body-copy { max-width: 600px; margin-left: auto; margin-right: auto; }
+    .muted { color: var(--ink-muted-48); }
+    .tile-dark .muted, .tile-dark-2 .muted { color: var(--muted-on-dark); }
+
+    /* ───────────────────────── Buttons & links ───────────────────────── */
+    .btn {
+      display: inline-block;
+      font-family: var(--font);
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: -0.374px;
+      line-height: 1.2;
+      padding: 12px 22px;
+      border-radius: 9999px;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background-color 0.2s ease-out, color 0.2s ease-out, transform 0.12s ease-out;
+    }
+    .btn:active { transform: scale(0.95); }
+    .btn:focus-visible { outline: 2px solid var(--primary-focus); outline-offset: 3px; }
+    .btn-primary {
+      background: linear-gradient(180deg, var(--btn-silver-top), var(--btn-silver-bottom));
+      color: #f5f5f7;
+      border-color: var(--black);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(180deg, var(--btn-silver-top-hover), var(--btn-silver-bottom-hover));
+    }
+    .btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+    .btn-ghost:hover { background: var(--ink); color: #f5f5f7; }
+    .tile-dark .btn-ghost, .tile-dark-2 .btn-ghost { color: var(--primary-on-dark); border-color: var(--primary-on-dark); }
+    .tile-dark .btn-ghost:hover, .tile-dark-2 .btn-ghost:hover { background: var(--primary-on-dark); color: var(--ink); }
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .text-link {
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-color: rgba(29,29,31,0.35);
+      text-underline-offset: 3px;
+    }
+    .text-link:hover { text-decoration-color: var(--ink); }
+    .text-link:focus-visible { outline: 2px solid var(--primary-focus); outline-offset: 3px; }
+    .tile-dark .text-link, .tile-dark-2 .text-link { color: var(--primary-on-dark); text-decoration-color: rgba(210,210,215,0.4); }
+    .tile-dark .text-link:hover, .tile-dark-2 .text-link:hover { text-decoration-color: var(--primary-on-dark); }
+
+    /* ───────────────────────── Hero ───────────────────────── */
+    .hero { padding-top: 140px; }
+    .hero .lead { margin-top: 12px; }
+    .hero .cta-row { margin-top: 28px; }
+    .hero-product { margin-top: 64px; }
+
+    /* Product render — the photo carries its own ground shadow, so no CSS shadow.
+       brightness/contrast clip the photo's near-white backdrop to pure white so
+       the image bounds disappear against the canvas. */
+    .product-render {
+      width: clamp(170px, 26vw, 240px);
+      height: auto;
+      filter: brightness(1.04) contrast(1.05);
+    }
+    .render-caption {
+      margin-top: 32px;
+      font-size: 12px;
+      letter-spacing: -0.12px;
+      color: var(--ink-muted-48);
+    }
+    .tile-dark .render-caption { color: var(--muted-on-dark); }
+
+    /* ───────────────────────── Feature trio ───────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+      text-align: center;
+    }
+    @media (max-width: 833px) { .feature-grid { grid-template-columns: 1fr; gap: 48px; } }
+    .feature h3 {
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 1.19;
+      letter-spacing: 0.011em;
+      margin-bottom: 8px;
+    }
+    .feature p {
+      font-size: 17px;
+      color: var(--muted-on-dark);
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .feature-icon {
+      display: block;
+      margin: 0 auto 20px;
+      width: 44px;
+      height: 44px;
+      color: var(--primary-on-dark);
+    }
+
+    /* ───────────────────────── Philosophy ───────────────────────── */
+    .philosophy-list {
+      margin-top: 56px;
+      display: grid;
+      gap: 48px;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .philosophy-item h3 {
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 1.19;
+      margin-bottom: 8px;
+    }
+    .philosophy-item p { color: var(--ink-muted-80); }
+
+    /* ───────────────────────── Waitlist ───────────────────────── */
+    .waitlist-form {
+      margin-top: 40px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .waitlist-form[hidden] { display: none; }
+    .waitlist-form label {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    .waitlist-input {
+      font-family: var(--font);
+      font-size: 17px;
+      letter-spacing: -0.374px;
+      color: var(--ink);
+      background: var(--canvas);
+      border: 1px solid rgba(0,0,0,0.16);
+      border-radius: 9999px;
+      padding: 12px 20px;
+      height: 48px;
+      width: min(340px, 100%);
+      transition: border-color 0.2s ease-out;
+    }
+    .waitlist-input::placeholder { color: var(--ink-muted-48); }
+    .waitlist-input:focus { outline: 2px solid var(--primary-focus); outline-offset: 2px; border-color: var(--primary-focus); }
+    .waitlist-input[aria-invalid="true"] { border-color: #d70015; }
+    .waitlist-form .btn { height: 48px; }
+    .form-feedback {
+      margin-top: 16px;
+      font-size: 14px;
+      letter-spacing: -0.224px;
+      min-height: 20px;
+    }
+    .form-feedback.error   { color: #d70015; }
+    .form-feedback.success { color: var(--ink); font-weight: 600; }
+    .form-note {
+      margin-top: 20px;
+      font-size: 12px;
+      letter-spacing: -0.12px;
+      color: var(--ink-muted-48);
+    }
+
+    /* ───────────────────────── Contact cards ───────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+      text-align: left;
+    }
+    @media (max-width: 735px) { .card-grid { grid-template-columns: 1fr; } }
+    .utility-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: 18px;
+      padding: 32px 28px;
+    }
+    .utility-card h3 {
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 1.19;
+      margin-bottom: 10px;
+    }
+    .utility-card p {
+      color: var(--ink-muted-80);
+      margin-bottom: 18px;
+    }
+    .utility-card ul { list-style: none; }
+    .utility-card li {
+      font-size: 17px;
+      line-height: 1.5;
+      padding: 5px 0;
+    }
+
+    /* ───────────────────────── Footer ───────────────────────── */
+    footer {
+      background: var(--parchment);
+      padding: 48px var(--pad-x) 40px;
+      border-top: 1px solid var(--hairline);
+    }
+    .footer-inner { max-width: 980px; margin: 0 auto; }
+    .footer-wordmark {
+      font-family: 'Michroma', var(--font);
+      font-size: 14px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .footer-cols {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 640px) { .footer-cols { grid-template-columns: 1fr; gap: 8px; } }
+    .footer-cols h4 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.224px;
+      color: var(--ink-muted-80);
+      margin-bottom: 6px;
+    }
+    .footer-cols ul { list-style: none; }
+    .footer-cols li {
+      font-size: 14px;
+      line-height: 1.5;
+      letter-spacing: 0;
+      color: var(--ink-muted-48);
+    }
+    .footer-cols a {
+      display: inline-block;
+      padding: 7px 0;
+      font-size: 14px;
+      letter-spacing: 0;
+      color: var(--ink-muted-48);
+      text-decoration: none;
+    }
+    .footer-cols a:hover { color: var(--ink); text-decoration: underline; }
+    .footer-legal {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+      font-size: 12px;
+      letter-spacing: -0.12px;
+      color: var(--ink-muted-48);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ───────────────────────── Reveal animation ───────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .btn, .btn:active { transition: none; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Global nav -->
+  <nav class="global-nav" aria-label="Main">
+    <a class="nav-wordmark" href="#top">coast cosmetics</a>
+    <ul class="nav-links">
+      <li><a href="#product">Product</a></li>
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#waitlist">Waitlist</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main id="top">
+
+    <!-- Hero / brand -->
+    <section class="tile tile-white hero">
+      <div class="tile-inner">
+        <p class="eyebrow">Coast Cosmetics</p>
+        <h1 class="hero-display" style="margin-top:14px;">One product.<br>Made properly.</h1>
+        <p class="lead muted">A hair styling powder. Nothing else.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+          <a class="btn btn-ghost" href="#product">Learn more</a>
+        </div>
+        <div class="hero-product reveal">
+          <img class="product-render" src="assets/product.jpg" alt="The Coast Cosmetics hair styling powder: a polished silver cylinder with a white lid" width="462" height="1000" fetchpriority="high">
+          <p class="render-caption">Hair Styling Powder N°01, the concept. Final design in development.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product -->
+    <section class="tile tile-dark" id="product">
+      <div class="tile-inner">
+        <p class="eyebrow">The Product</p>
+        <h2 class="display-lg" style="margin-top:14px;">Hair Styling Powder N°01</h2>
+        <p class="lead-airy body-copy" style="margin-top:18px;">
+          A weightless styling powder that builds matte texture and natural volume at the roots.
+          Shake, work in, restyle all day. Invisible in the hand, invisible in the hair.
+        </p>
+        <div class="feature-grid">
+          <div class="feature reveal">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>
+            <h3>Matte finish</h3>
+            <p>No shine, no residue. Hair looks untouched — just better.</p>
+          </div>
+          <div class="feature reveal">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M5 10l7-7 7 7"/></svg>
+            <h3>Weightless lift</h3>
+            <p>Volume from the roots without stiffness or buildup.</p>
+          </div>
+          <div class="feature reveal">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+            <h3>Restyleable</h3>
+            <p>Rework your style with your fingertips, hours later.</p>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:56px; font-size:14px; letter-spacing:-0.224px;">
+          Formula in final development. Specifications published at launch.
+        </p>
+      </div>
+    </section>
+
+    <!-- Philosophy -->
+    <section class="tile tile-parchment" id="philosophy">
+      <div class="tile-inner">
+        <p class="eyebrow">Design Philosophy</p>
+        <h2 class="display-lg" style="margin-top:14px;">Less, but better.</h2>
+        <div class="philosophy-list">
+          <div class="philosophy-item reveal">
+            <h3>One product, total focus</h3>
+            <p>We don't make a range. Every hour of development goes into a single formula, until it can't be meaningfully improved.</p>
+          </div>
+          <div class="philosophy-item reveal">
+            <h3>Nothing that doesn't work</h3>
+            <p>No filler ingredients, no fragrance for fragrance's sake, no packaging that exists to look bigger on a shelf.</p>
+          </div>
+          <div class="philosophy-item reveal">
+            <h3>Honest by default</h3>
+            <p>Full ingredient disclosure, sourced suppliers named, real performance claims. If we can't prove it, we don't print it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Waitlist -->
+    <section class="tile tile-white" id="waitlist">
+      <div class="tile-inner">
+        <p class="eyebrow">Waitlist</p>
+        <h2 class="display-lg" style="margin-top:14px;">Be first in line.</h2>
+        <p class="lead-airy body-copy" style="margin-top:18px;">
+          Hair Styling Powder N°01 launches in a limited first batch.
+          Waitlist members get first access and launch pricing.
+        </p>
+        <form class="waitlist-form" id="waitlist-form" novalidate>
+          <label for="email">Email address</label>
+          <input class="waitlist-input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+          <!-- Honeypot: hidden from people, often filled by bots. Submissions with this set are ignored. -->
+          <input type="text" id="hp-company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
+          <button class="btn btn-primary" type="submit" id="waitlist-submit">Join the waitlist</button>
+        </form>
+        <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
+        <p class="form-note">One launch email. No marketing, no sharing of your address.</p>
+      </div>
+    </section>
+
+    <!-- Customers & suppliers -->
+    <section class="tile tile-parchment" id="contact">
+      <div class="tile-inner">
+        <p class="eyebrow">Get in touch</p>
+        <h2 class="display-lg" style="margin-top:14px;">Customers &amp; suppliers.</h2>
+        <div class="card-grid">
+          <div class="utility-card reveal">
+            <h3>For customers</h3>
+            <p>Questions about the product, the launch, or your waitlist spot, we answer everything ourselves, usually within two working days.</p>
+            <ul>
+              <li>Email: <a class="text-link" href="mailto:connect@coast-cosmetics.com">connect@coast-cosmetics.com</a></li>
+              <li>Shipping, returns &amp; FAQ published at launch</li>
+            </ul>
+          </div>
+          <div class="utility-card reveal">
+            <h3>For suppliers</h3>
+            <p>We work with a small set of named suppliers for raw ingredients, packaging, and fulfilment. Introductions are welcome.</p>
+            <ul>
+              <li>Email: <a class="text-link" href="mailto:connect@coast-cosmetics.com">connect@coast-cosmetics.com</a></li>
+              <li>Include certifications and MOQs in your first email</li>
+              <li>NDA available on request</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-wordmark">Coast Cosmetics</p>
+      <div class="footer-cols">
+        <div>
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#product">Hair Styling Powder N°01</a></li>
+            <li><a href="#waitlist">Join the waitlist</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#philosophy">Design philosophy</a></li>
+            <li><a href="mailto:connect@coast-cosmetics.com">Press</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>Mobile&nbsp;&nbsp;<a href="tel:+32468294100">+32 468 29 41 00</a></li>
+            <li>Email&nbsp;&nbsp;<a href="mailto:connect@coast-cosmetics.com">connect@coast-cosmetics.com</a></li>
+            <li>Web&nbsp;&nbsp;<a href="https://www.coast-cosmetics.com">www.coast-cosmetics.com</a></li>
+            <li>VAT&nbsp;&nbsp;BE1034.713.252</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-legal">
+        <span>2026 Coast Cosmetics. All rights reserved.</span>
+        <span>By House of Antwerp · Registered in Belgium.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Waitlist form ───────────────────────────────────────────────
+    // Every signup is emailed to connect@coast-cosmetics.com with the
+    // subscriber's address. Delivery uses Web3Forms (free, works on a static
+    // site, the key below is safe to expose publicly).
+    //
+    // SETUP (one time): get a free access key for connect@coast-cosmetics.com
+    // at https://web3forms.com and paste it into WEB3FORMS_ACCESS_KEY below.
+    // Web3Forms then emails every submission to that address automatically.
+    // Until a key is set, the form falls back to opening a pre-addressed
+    // email in the visitor's mail app.
+    const WAITLIST_RECIPIENT = 'connect@coast-cosmetics.com';
+    const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
+
+    const form = document.getElementById('waitlist-form');
+    const emailInput = document.getElementById('email');
+    const honeypot = document.getElementById('hp-company');
+    const feedback = document.getElementById('form-feedback');
+    const submitBtn = document.getElementById('waitlist-submit');
+
+    async function sendSignup(email) {
+      const keySet = WEB3FORMS_ACCESS_KEY && !WEB3FORMS_ACCESS_KEY.startsWith('YOUR_');
+      // Fallback until a key is configured: open a pre-addressed email to the brand.
+      if (!keySet) {
+        const subject = encodeURIComponent('Coast Cosmetics — waitlist signup');
+        const body = encodeURIComponent('Please add me to the Coast Cosmetics waitlist.\n\nEmail: ' + email);
+        window.location.href = 'mailto:' + WAITLIST_RECIPIENT + '?subject=' + subject + '&body=' + body;
+        return true;
+      }
+      // Automatic delivery: Web3Forms emails this submission to the key's owner
+      // (connect@coast-cosmetics.com). The subscriber's address is the reply-to.
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: 'New Coast Cosmetics waitlist signup',
+            from_name: 'Coast Cosmetics Waitlist',
+            email: email,
+            message: 'New waitlist signup: ' + email
+          })
+        });
+        const data = await res.json();
+        return data.success === true;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // Bots tend to fill the hidden honeypot — quietly accept without sending.
+      if (honeypot && honeypot.value) {
+        form.hidden = true;
+        feedback.className = 'form-feedback success';
+        feedback.textContent = 'You’re on the list. We’ll email you once, at launch.';
+        return;
+      }
+      const email = emailInput.value.trim();
+      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+      if (!valid) {
+        emailInput.setAttribute('aria-invalid', 'true');
+        feedback.className = 'form-feedback error';
+        feedback.textContent = 'Please enter a valid email address, e.g. you@example.com.';
+        emailInput.focus();
+        return;
+      }
+      emailInput.removeAttribute('aria-invalid');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Joining…';
+
+      const ok = await sendSignup(email);
+      if (ok) {
+        form.hidden = true;
+        feedback.className = 'form-feedback success';
+        feedback.textContent = 'You’re on the list. We’ll email you once, at launch.';
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Join the waitlist';
+        feedback.className = 'form-feedback error';
+        feedback.textContent = 'Sorry — something went wrong. Please email ' + WAITLIST_RECIPIENT + ' directly.';
+      }
+    });
+
+    emailInput.addEventListener('input', () => {
+      if (emailInput.getAttribute('aria-invalid')) {
+        emailInput.removeAttribute('aria-invalid');
+        feedback.textContent = '';
+        feedback.className = 'form-feedback';
+      }
+    });
+
+    // Scroll reveal — skipped entirely when reduced motion is requested.
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+    }
+  </script>
+</body>
+</html>
